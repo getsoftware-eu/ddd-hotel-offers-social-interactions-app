@@ -1,0 +1,33 @@
+
+spring:
+
+  datasource:
+    url: jdbc:tc:postgresql:16:///eutest?TC_INITSCRIPT=init-testcontainer.sql
+    username: eutest
+    password: test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  test:
+    database:
+      replace: none # It prevents Spring from trying to replace the Testcontainers DataSource.
+
+jpa:
+  properties:
+    hibernate.jdbc.batch_size: 20
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.default_schema: eutest
+    hibernate.ddl-auto: none
+    open-in-view: false
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master-tables-with-views-and-triggers.xml
+    enabled: true
+    default-schema: eutest
+    user: eutest
+    password: test
+    # drop-first: false
+---
+db:
+  configuration:
+    db2:
+      hibernate_connection_driver_class: "org.h2.Driver"
+      hibernate_dialect: "org.hibernate.dialect.H2Dialect"
+      hibernate_hbm2ddl_auto: "create"
